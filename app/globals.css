@@ -340,6 +340,149 @@ body::-webkit-scrollbar {
     font-size: 0.9vw;
 }
 
+/* Pricing Section (bhome3) */
+.bhome3 {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 7;
+    pointer-events: none;
+    opacity: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 5vw;
+    background: transparent;
+}
+
+.pricing-container {
+    display: flex;
+    gap: 1.5vw;
+    align-items: stretch;
+    justify-content: center;
+    width: 85%;
+}
+
+.pricing-card {
+    flex: 1;
+    padding: 1.5vw;
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.65);
+    backdrop-filter: blur(20px);
+    box-shadow: 0 10px 40px rgba(0,0,0,0.05);
+    border: 1px solid rgba(255,255,255,0.3);
+    display: flex;
+    flex-direction: column;
+}
+
+.pricing-card.recommended {
+    background: rgba(255, 255, 255, 0.75);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+    border: 2px solid #D4FE94;
+    position: relative;
+    transform: scale(1.05);
+    z-index: 2;
+}
+
+.pricing-badge {
+    position: absolute;
+    top: -0.8vw;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #D4FE94;
+    padding: 0.3vw 0.8vw;
+    border-radius: 20px;
+    fontSize: 0.7vw;
+    fontWeight: 700;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.pricing-header-sm { font-size: 0.8vw; color: #333; margin-bottom: 0.3vw; font-weight: 600; }
+.pricing-header-lg { font-size: 1.2vw; font-weight: 800; margin-bottom: 0.3vw; }
+.pricing-header-sub { font-size: 0.7vw; color: #666; margin-bottom: 0.8vw; }
+
+.pricing-target {
+    background: rgba(255,255,255,0.5);
+    padding: 0.6vw;
+    border-radius: 6px;
+    margin-bottom: 1vw;
+    font-size: 0.75vw;
+    line-height: 1.3;
+    color: #333;
+}
+.pricing-card.recommended .pricing-target {
+    background: rgba(240, 253, 244, 0.6);
+    color: #000;
+}
+
+.pricing-target-title { font-weight: 700; display: block; margin-bottom: 0.2vw; color: #000; }
+
+.pricing-price { font-size: 1.8vw; font-weight: 800; margin-bottom: 0.1vw; }
+.pricing-period { font-size: 0.7vw; color: #555; margin-bottom: 1.2vw; }
+.pricing-divider { border-top: 1px solid rgba(0,0,0,0.1); margin: 0 -1.5vw 1.2vw -1.5vw; }
+
+/* Logo Styles */
+.logo-container {
+    position: absolute;
+    top: 3vw;
+    left: 4.166vw;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    gap: 0.5vw;
+}
+
+.logo-icon {
+    width: 1.5vw;
+    height: 1.5vw;
+    background: #D4FE94;
+    border-radius: 4px;
+}
+
+.logo-text {
+    font-size: 1.2vw;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+}
+
+/* Feature Item Layout (PC Default) */
+.feature-item { 
+    font-size: 0.85vw; 
+    line-height: 1.5; /* Increased line-height */
+    display: flex; /* Flex layout for side-by-side */
+    align-items: baseline; /* Align text properly */
+    margin-bottom: 5px;
+}
+.feature-bold { 
+    font-weight: 700; 
+    white-space: nowrap; /* Prevent title wrapping */
+    flex-shrink: 0; /* Keep title fixed width/size */
+    text-align: justify;
+    text-align-last: justify;
+}
+.feature-desc { 
+    font-size: 0.8vw; 
+    color: #444; 
+    text-align: left;
+}
+
+.pricing-btn {
+    margin-top: 1.5vw;
+    width: 100%;
+    padding: 0.8vw;
+    border-radius: 8px;
+    background: rgba(255,255,255,0.8);
+    border: 1px solid rgba(0,0,0,0.1);
+    font-weight: 600;
+    cursor: pointer;
+    font-size: 0.9vw;
+}
+.pricing-card.recommended .pricing-btn { background: #D4FE94; border: none; }
+.pricing-card:last-child .pricing-btn { background: #000; color: #fff; border: none; }
+
+
 /* Helper for utility classes used in original HTML */
 .f_12 { font-size: 12px; }
 .f_16 { font-size: 16px; }
@@ -347,43 +490,148 @@ body::-webkit-scrollbar {
 .co-w { color: white; }
 .flex-xb-yc { display: flex; justify-content: space-between; align-items: center; }
 
-/* Mobile Media Query (simplified) */
+/* Mobile Media Query */
 @media screen and (max-width: 768px) {
+    /* Global Overrides */
+    body { overflow-y: auto; } /* Allow scrolling on mobile if needed */
+    .bhome-full { height: auto; min-height: 100vh; overflow-y: auto; overflow-x: hidden; }
+
     #modelViewer {
         width: 100vw;
-        height: 98vw;
+        height: 80vh; /* Reduced height to allow content below */
         right: 0;
-        top: 10vh;
+        top: 0;
+        position: fixed; /* Keep it fixed in background */
+        z-index: 1;
     }
     
+    .grid-svg {
+        width: 100vw;
+        height: 100vh;
+    }
+
+    /* Logo Override */
+    .logo-container {
+        top: 25px; /* Adjust top spacing */
+        left: 5%; /* Align with content padding */
+        gap: 10px; /* Add gap between icon and text */
+    }
+    .logo-icon { width: 36px; height: 36px; }
+    .logo-text { font-size: 28px; }
+
+    /* Home (bhome1) */
     .bhome1 .zuo {
         width: 100%;
         margin-left: 0;
-        padding: 0 5% 50px;
-        position: absolute;
-        left: 0;
-        bottom: 0;
+        padding: 0 5%;
+        position: relative;
+        height: 100vh;
+        justify-content: center;
+        align-items: center !important; /* Center align items */
+        text-align: center !important; /* Center text */
     }
     
-    .bhome1 .zuo .t1 {
-        font-size: 34px;
+    .bhome1 .zuo .t1 { font-size: 32px !important; margin-bottom: 20px !important; width: 100%; }
+    .bhome1 .zuo .t2 { font-size: 60px !important; margin-bottom: 25px !important; line-height: 1.1 !important; width: 100%; }
+    .bhome1 .zuo .t3 { font-size: 20px !important; max-width: 100% !important; margin-bottom: 40px !important; line-height: 1.6 !important; width: 100%; }
+    .bhome1 .zuo .t4 { 
+        font-size: 14px !important; 
+        padding-left: 0 !important; 
+        border-left: none !important;
+        border-top: 2px solid #D4FE94; /* Move border to top for centered layout */
+        padding-top: 15px;
+        margin-top: 20px;
+        display: inline-block;
     }
-    
-    .bhome1 .you {
-        display: none; /* As per original CSS */
-    }
-    
+    .bhome1 .zuo .bhome1-btn { font-size: 18px !important; padding: 18px 36px !important; }
+    .bhome1 .zuo .bhome1-btn svg { width: 22px !important; }
+
+    .bhome1 .you { display: none; } /* Keep hidden as originally intended */
+
+    /* CTA (bhome2) */
     .bhome2 {
         flex-direction: column;
         justify-content: center;
         padding: 0 5%;
+        overflow-y: hidden;
+        pointer-events: auto !important; /* Ensure clickable on mobile */
     }
     
-    .bhome2 .zuo, .bhome2 .you {
+    .bhome2 .zuo, .bhome2 .you { width: 100%; opacity: 1 !important; } /* Force opacity for mobile view simplicity if GSAP fails */
+    
+    .bhome2 .zuo {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: flex-start; /* Ensure left alignment */
+        text-align: left;
+        height: 100vh;
+    }
+
+    .bhome2 .zuo .t1 { font-size: 20px !important; opacity: 0.9 !important; }
+    .bhome2 .zuo .t2 { font-size: 42px !important; margin-top: 20px !important; margin-bottom: 20px !important; }
+    .bhome2 .zuo .t3 { font-size: 24px !important; color: rgba(255,255,255,0.9) !important; }
+    .bhome2 .zuo .bhome2-btn { font-size: 16px !important; padding: 15px 30px !important; margin-top: 40px !important; }
+ 
+     /* Hide video and extra content on mobile page 2 as requested */
+    .bhome2 .you { display: none !important; } 
+    .bhome2 .zuo .solution-list { display: flex; flex-direction: column; gap: 25px; margin-top: 30px; }
+    .bhome2 .zuo .item-title { font-size: 22px !important; margin-bottom: 10px !important; }
+    .bhome2 .zuo .item-desc { font-size: 16px !important; opacity: 1 !important; margin-bottom: 5px !important; }
+    .bhome2 .zuo .item-tags { font-size: 14px !important; opacity: 0.8 !important; }
+ 
+     /* Pricing (bhome3) */
+    .bhome3 {
+        padding: 100px 5% 50px;
+        align-items: flex-start;
+        overflow-y: auto;
+        height: 100vh;
+        background: rgba(255,255,255,0.95); /* More solid background for readability */
+    }
+
+    .pricing-container {
+        flex-direction: column;
         width: 100%;
+        gap: 30px;
+        padding-bottom: 50px;
     }
+
+    .pricing-card {
+        width: 100%;
+        padding: 25px;
+        transform: none !important; /* Disable scale effect */
+    }
+
+    .pricing-card.recommended {
+        border: 2px solid #D4FE94;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    }
+
+    .pricing-badge {
+        font-size: 12px;
+        padding: 5px 15px;
+        top: -12px;
+    }
+
+    /* Reset font sizes to pixels for mobile readability */
+    .pricing-header-sm { font-size: 14px; }
+    .pricing-header-lg { font-size: 24px; }
+    .pricing-header-sub { font-size: 14px; }
     
-    .bhome2 .zuo .t2 {
-        font-size: 24px;
+    .pricing-target { padding: 15px; margin-bottom: 20px; font-size: 14px; }
+    .pricing-target-title { margin-bottom: 5px; }
+    
+    .pricing-price { font-size: 32px; }
+    .pricing-period { font-size: 14px; margin-bottom: 20px; }
+    .pricing-divider { margin: 0 -25px 20px -25px; }
+    
+    .pricing-features { gap: 16px; } /* Increased vertical gap */
+    .feature-item { 
+        font-size: 14px; 
+        display: flex; /* Restore flex for alignment */
+        line-height: 1.5;
     }
+    .feature-desc { font-size: 14px; }
+    
+    .pricing-btn { font-size: 16px; padding: 15px; margin-top: 25px; }
 }

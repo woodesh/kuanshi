@@ -168,6 +168,17 @@ export default function Home() {
   const pageIndexRef = useRef(0);
   const bhome3Ref = useRef<HTMLDivElement>(null);
 
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
   useEffect(() => {
     pageIndexRef.current = pageIndex;
   }, [pageIndex]);
@@ -440,13 +451,10 @@ export default function Home() {
       {/* Home State (bhome1) */}
       <div className="bhome1" style={{ opacity: isLoaded ? 1 : 0, transition: 'opacity 1s ease', pointerEvents: isLoaded ? 'auto' : 'none' }}>
         {/* Logo positioned absolutely at top-left */}
-        <div style={{ position: 'absolute', top: '3vw', left: '4.166vw', zIndex: 10, display: 'flex', alignItems: 'center', gap: '0.5vw' }}>
-            <div style={{ width: '1.5vw', height: '1.5vw', background: '#D4FE94', borderRadius: '4px' }}></div>
-            <span style={{ 
-                fontSize: '1.2vw', 
-                fontWeight: 800, 
-                color: pageIndex > 0 ? '#fff' : '#000', // White on pages 2 & 3, Black on Home
-                letterSpacing: '-0.02em',
+        <div className="logo-container">
+            <div className="logo-icon"></div>
+            <span className="logo-text" style={{ 
+                color: (pageIndex === 2 && isMobile) ? '#000' : (pageIndex > 0 ? '#fff' : '#000'), 
                 transition: 'color 0.5s ease'
             }}>款世科技</span>
         </div>
@@ -558,100 +566,100 @@ export default function Home() {
         </div>
       </div>
       {/* Pricing State (bhome3) */}
-      <div className="bhome3" ref={bhome3Ref} style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', zIndex: 7, pointerEvents: 'none', opacity: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '0 5vw', background: 'transparent' }}>
-         <div className="pricing-container" style={{ display: 'flex', gap: '1.5vw', alignItems: 'stretch', justifyContent: 'center', width: '85%' }}> {/* Reduced width from 100% to 85% to make cards slimmer */}
+      <div className="bhome3" ref={bhome3Ref}>
+         <div className="pricing-container">
             {/* Card 1: Entry */}
-            <div className="pricing-card" style={{ flex: 1, padding: '1.5vw', borderRadius: '16px', background: 'rgba(255, 255, 255, 0.65)', backdropFilter: 'blur(20px)', boxShadow: '0 10px 40px rgba(0,0,0,0.05)', border: '1px solid rgba(255,255,255,0.3)', display: 'flex', flexDirection: 'column' }}>
-                <div style={{ fontSize: '0.8vw', color: '#333', marginBottom: '0.3vw', fontWeight: 600 }}>入门版</div>
-                <div style={{ fontSize: '1.2vw', fontWeight: 800, marginBottom: '0.3vw' }}>跨境出海·战略洞察包</div>
-                <div style={{ fontSize: '0.7vw', color: '#666', marginBottom: '0.8vw' }}>DeepResearch Kit</div>
+            <div className="pricing-card">
+                <div className="pricing-header-sm">入门版</div>
+                <div className="pricing-header-lg">跨境出海·战略洞察包</div>
+                <div className="pricing-header-sub">DeepResearch Kit</div>
                 
-                <div style={{ background: 'rgba(255,255,255,0.5)', padding: '0.6vw', borderRadius: '6px', marginBottom: '1vw', fontSize: '0.75vw', lineHeight: 1.3, color: '#333' }}>
-                    <span style={{ fontWeight: 700, display: 'block', marginBottom: '0.2vw', color: '#000' }}>针对人群</span>
+                <div className="pricing-target">
+                    <span className="pricing-target-title">针对人群</span>
                     处于转型期、犹豫是否出海、需要数据支撑决策的工厂老板。
                 </div>
 
-                <div style={{ fontSize: '1.8vw', fontWeight: 800, marginBottom: '0.1vw' }}>¥3,980</div>
-                <div style={{ fontSize: '0.7vw', color: '#555', marginBottom: '1.2vw' }}>一次性付费 / One-time</div>
+                <div className="pricing-price">¥3,980</div>
+                <div className="pricing-period">一次性付费 / One-time</div>
                 
-                <div style={{ borderTop: '1px solid rgba(0,0,0,0.1)', margin: '0 -1.5vw 1.2vw -1.5vw' }}></div>
+                <div className="pricing-divider"></div>
                 
-                <div className="features" style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '0.6vw' }}>
-                    <div style={{ fontSize: '0.85vw', lineHeight: 1.3 }}>
-                        <span style={{ fontWeight: 700 }}>基因诊断：</span><span style={{ fontSize: '0.8vw', color: '#444' }}>评估现有视觉评分，测算价格竞争力</span>
+                <div className="pricing-features">
+                    <div className="feature-item">
+                        <span className="feature-bold">基因诊断：</span><span className="feature-desc">评估现有视觉评分，测算价格竞争力</span>
                     </div>
-                    <div style={{ fontSize: '0.85vw', lineHeight: 1.3 }}>
-                        <span style={{ fontWeight: 700 }}>竞品透视：</span><span style={{ fontSize: '0.8vw', color: '#444' }}>拆解亚马逊热销爆品，洞察 TikTok 流量来源</span>
+                    <div className="feature-item">
+                        <span className="feature-bold">竞品透视：</span><span className="feature-desc">拆解亚马逊热销爆品，洞察 TikTok 流量来源</span>
                     </div>
-                    <div style={{ fontSize: '0.85vw', lineHeight: 1.3 }}>
-                        <span style={{ fontWeight: 700 }}>战术规划：</span><span style={{ fontSize: '0.8vw', color: '#444' }}>明确平台渠道打法，制定首月落地路径</span>
+                    <div className="feature-item">
+                        <span className="feature-bold">战术规划：</span><span className="feature-desc">明确平台渠道打法，制定首月落地路径</span>
                     </div>
                 </div>
                 
-                <button style={{ marginTop: '1.5vw', width: '100%', padding: '0.8vw', borderRadius: '8px', background: 'rgba(255,255,255,0.8)', border: '1px solid rgba(0,0,0,0.1)', fontWeight: 600, cursor: 'pointer', fontSize: '0.9vw' }}>获取样本报告</button>
+                <button className="pricing-btn">获取样本报告</button>
             </div>
 
             {/* Card 2: Growth (Recommended) */}
-            <div className="pricing-card recommended" style={{ flex: 1, padding: '1.5vw', borderRadius: '16px', background: 'rgba(255, 255, 255, 0.75)', backdropFilter: 'blur(20px)', boxShadow: '0 20px 60px rgba(0,0,0,0.1)', border: '2px solid #D4FE94', display: 'flex', flexDirection: 'column', position: 'relative', transform: 'scale(1.05)', zIndex: 2 }}>
-                <div style={{ position: 'absolute', top: '-0.8vw', left: '50%', transform: 'translateX(-50%)', background: '#D4FE94', padding: '0.3vw 0.8vw', borderRadius: '20px', fontSize: '0.7vw', fontWeight: 700, boxShadow: '0 4px 10px rgba(0,0,0,0.1)' }}>推荐 / Best Value</div>
-                <div style={{ fontSize: '0.8vw', color: '#333', marginBottom: '0.3vw', fontWeight: 600 }}>增长版 (Growth)</div>
-                <div style={{ fontSize: '1.2vw', fontWeight: 800, marginBottom: '0.3vw' }}>矩阵运营托管</div>
-                <div style={{ fontSize: '0.7vw', color: '#666', marginBottom: '0.8vw' }}>Matrix Ops</div>
+            <div className="pricing-card recommended">
+                <div className="pricing-badge">推荐 / Best Value</div>
+                <div className="pricing-header-sm">增长版 (Growth)</div>
+                <div className="pricing-header-lg">矩阵运营托管</div>
+                <div className="pricing-header-sub">Matrix Ops</div>
                 
-                <div style={{ background: 'rgba(240, 253, 244, 0.6)', padding: '0.6vw', borderRadius: '6px', marginBottom: '1vw', fontSize: '0.75vw', lineHeight: 1.3, color: '#000' }}>
-                    <span style={{ fontWeight: 700, display: 'block', marginBottom: '0.2vw' }}>针对人群</span>
+                <div className="pricing-target">
+                    <span className="pricing-target-title">针对人群</span>
                     需要搭建流量矩阵，从0到1起号的客户。
                 </div>
 
-                <div style={{ fontSize: '1.8vw', fontWeight: 800, marginBottom: '0.1vw' }}>询价 / 月费制</div>
-                <div style={{ fontSize: '0.7vw', color: '#555', marginBottom: '1.2vw' }}>Custom / Monthly Retainer</div>
+                <div className="pricing-price">询价 / 月费制</div>
+                <div className="pricing-period">Custom / Monthly Retainer</div>
                 
-                <div style={{ borderTop: '1px solid rgba(0,0,0,0.1)', margin: '0 -1.5vw 1.2vw -1.5vw' }}></div>
+                <div className="pricing-divider"></div>
                 
-                <div className="features" style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '0.6vw' }}>
-                    <div style={{ fontSize: '0.85vw', lineHeight: 1.3 }}>
-                        <span style={{ fontWeight: 700 }}>基建部署：</span><span style={{ fontSize: '0.8vw', color: '#444' }}>配置4组独享环境，完成人设装修</span>
+                <div className="pricing-features">
+                    <div className="feature-item">
+                        <span className="feature-bold">基建部署：</span><span className="feature-desc">配置4组独享环境，完成人设装修</span>
                     </div>
-                    <div style={{ fontSize: '0.85vw', lineHeight: 1.3 }}>
-                        <span style={{ fontWeight: 700 }}>内容填充：</span><span style={{ fontSize: '0.8vw', color: '#444' }}>产出AI网红生活流，制作爆款带货混剪</span>
+                    <div className="feature-item">
+                        <span className="feature-bold">内容填充：</span><span className="feature-desc">产出AI网红生活流，制作爆款带货混剪</span>
                     </div>
-                    <div style={{ fontSize: '0.85vw', lineHeight: 1.3 }}>
-                        <span style={{ fontWeight: 700 }}>运营托管：</span><span style={{ fontSize: '0.8vw', color: '#444' }}>负责挂车发布操作，维护评论区互动</span>
+                    <div className="feature-item">
+                        <span className="feature-bold">运营托管：</span><span className="feature-desc">负责挂车发布操作，维护评论区互动</span>
                     </div>
                 </div>
                 
-                <button style={{ marginTop: '1.5vw', width: '100%', padding: '0.8vw', borderRadius: '8px', background: '#D4FE94', border: 'none', fontWeight: 600, cursor: 'pointer', fontSize: '0.9vw' }}>预约企业诊断</button>
+                <button className="pricing-btn">预约企业诊断</button>
             </div>
 
             {/* Card 3: Scale */}
-            <div className="pricing-card" style={{ flex: 1, padding: '1.5vw', borderRadius: '16px', background: 'rgba(255, 255, 255, 0.65)', backdropFilter: 'blur(20px)', boxShadow: '0 10px 40px rgba(0,0,0,0.05)', border: '1px solid rgba(255,255,255,0.3)', display: 'flex', flexDirection: 'column' }}>
-                <div style={{ fontSize: '0.8vw', color: '#333', marginBottom: '0.3vw', fontWeight: 600 }}>品牌版 (Scale)</div>
-                <div style={{ fontSize: '1.2vw', fontWeight: 800, marginBottom: '0.3vw' }}>全案增长</div>
-                <div style={{ fontSize: '0.7vw', color: '#666', marginBottom: '0.8vw' }}>Pro Scale</div>
+            <div className="pricing-card">
+                <div className="pricing-header-sm">品牌版 (Scale)</div>
+                <div className="pricing-header-lg">全案增长</div>
+                <div className="pricing-header-sub">Pro Scale</div>
                 
-                <div style={{ background: 'rgba(255,255,255,0.5)', padding: '0.6vw', borderRadius: '6px', marginBottom: '1vw', fontSize: '0.75vw', lineHeight: 1.3, color: '#333' }}>
-                    <span style={{ fontWeight: 700, display: 'block', marginBottom: '0.2vw', color: '#000' }}>针对人群</span>
+                <div className="pricing-target">
+                    <span className="pricing-target-title">针对人群</span>
                     需要投流放量、做品牌溢价的大客户。
                 </div>
 
-                <div style={{ fontSize: '1.8vw', fontWeight: 800, marginBottom: '0.1vw' }}>底薪 + 佣金</div>
-                <div style={{ fontSize: '0.7vw', color: '#555', marginBottom: '1.2vw' }}>Commission Based</div>
+                <div className="pricing-price">底薪 + 佣金</div>
+                <div className="pricing-period">Commission Based</div>
                 
-                <div style={{ borderTop: '1px solid rgba(0,0,0,0.1)', margin: '0 -1.5vw 1.2vw -1.5vw' }}></div>
+                <div className="pricing-divider"></div>
                 
-                <div className="features" style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '0.6vw' }}>
-                    <div style={{ fontSize: '0.85vw', lineHeight: 1.3 }}>
-                        <span style={{ fontWeight: 700 }}>投流托管：</span><span style={{ fontSize: '0.8vw', color: '#444' }}>每日监控投放数据，严格把控 ROI 风控</span>
+                <div className="pricing-features">
+                    <div className="feature-item">
+                        <span className="feature-bold">投流托管：</span><span className="feature-desc">每日监控投放数据，严格把控 ROI 风控</span>
                     </div>
-                    <div style={{ fontSize: '0.85vw', lineHeight: 1.3 }}>
-                        <span style={{ fontWeight: 700 }}>品牌视觉：</span><span style={{ fontSize: '0.8vw', color: '#444' }}>打造电影级 TVC 大片，定制30张 KV 海报</span>
+                    <div className="feature-item">
+                        <span className="feature-bold">品牌视觉：</span><span className="feature-desc">打造电影级 TVC 大片，定制30张 KV 海报</span>
                     </div>
-                    <div style={{ fontSize: '0.85vw', lineHeight: 1.3 }}>
-                        <span style={{ fontWeight: 700 }}>资产归还：</span><span style={{ fontSize: '0.8vw', color: '#444' }}>移交广告账户权限，沉淀人群包资产</span>
+                    <div className="feature-item">
+                        <span className="feature-bold">资产归还：</span><span className="feature-desc">移交广告账户权限，沉淀人群包资产</span>
                     </div>
                 </div>
                 
-                <button style={{ marginTop: '1.5vw', width: '100%', padding: '0.8vw', borderRadius: '8px', background: '#000', color: '#fff', border: 'none', fontWeight: 600, cursor: 'pointer', fontSize: '0.9vw' }}>联系销售顾问</button>
+                <button className="pricing-btn">联系销售顾问</button>
             </div>
          </div>
       </div>
