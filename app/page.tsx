@@ -9,60 +9,71 @@ const regions = [
   {
     id: 0,
     name: "亚太地区",
-    gmv: "~$4.44T",
-    cagr: "+10.3%",
-    penetration: "～20%",
-    premium: "++++",
+    // 含中国，体量最大。如果做跨境(不含中国内贸)，实际addressable market要小很多
+    gmv: "~$3.5T", 
+    cagr: "+9.8%",
+    penetration: "～25%",
+    // 亚太极其内卷，除日韩澳洲外，溢价极低
+    premium: "++",
     position: "-0.5486480439652968m 1.4775669874312245m -1.7725976550136735m",
     normal: "-0.2657068842640681m 0.6147703602713593m -0.7426016804360897m"
   },
   {
     id: 1,
     name: "东南亚地区",
-    gmv: "~$0.4539T",
-    cagr: "+11.14%",
-    penetration: "～12.8%",
-    premium: "++++",
+    // Google e-Conomy 2023报告数据：电商GMV约139B-150B
+    gmv: "~$0.15T", 
+    cagr: "+15.0%",
+    penetration: "～14%",
+    // 价格战重灾区，溢价低
+    premium: "++", 
     position: "-1.0057529136436034m -0.12986786027995423m -2.1424169404943227m",
     normal: "-0.42639945106977467m -0.07347541574399662m -0.9015458232439668m"
   },
   {
     id: 2,
     name: "北美地区",
-    gmv: "~$1.25T",
-    cagr: "+5.0%",
-    penetration: "～16.3%",
-    premium: "+++",
+    // 品牌高地，也是Pithy AI服务的最佳战场
+    gmv: "~$1.3T", 
+    cagr: "+9.0%", // 受TikTok/Temu拉动，实际增速在回暖
+    penetration: "～17%",
+    // 真正的品牌溢价之王
+    premium: "+++++", 
     position: "-0.29709103452649344m 1.5134071865400724m 1.795262940213165m",
     normal: "-0.11116269599976415m 0.6527212881755552m 0.7493982752719064m"
   },
   {
     id: 3,
     name: "欧洲地区",
-    gmv: "~$0.68T",
-    cagr: "+7%",
-    penetration: "～7.9-29.8%",
-    premium: "+++-",
+    // 西欧高溢价，东欧高增长
+    gmv: "~$0.75T", 
+    cagr: "+8%",
+    penetration: "～15%",
+    premium: "++++",
     position: "1.4283934306386246m 1.8894230850450324m 0.055148412763570576m",
     normal: "0.6149504465772905m 0.7879868319301883m 0.030210941048180503m"
   },
   {
     id: 4,
     name: "拉美地区",
-    gmv: "~$1.45T",
-    cagr: "+19%",
-    penetration: "<10%",
-    premium: "++++",
+    // 修正了之前的 trillion 级错误，eMarketer 数据约 150B-190B
+    gmv: "~$0.19T", 
+    cagr: "+18%", // 全球增速最快地区之一
+    penetration: "～11%",
+    // 关税与物流壁垒导致的高终端价
+    premium: "++++", 
     position: "1.383549740055114m -0.21364446293400108m 1.9065582926204068m",
     normal: "0.5940892594672141m -0.07347600365567172m 0.8010363466613042m"
   },
   {
     id: 5,
     name: "中东与非洲地区",
-    gmv: "~$0.155T",
-    cagr: "+14.28%",
-    penetration: "～8-15%",
-    premium: "+++++",
+    // 主要是海湾六国(GCC)贡献高客单
+    gmv: "~$0.06T", 
+    cagr: "+13%",
+    penetration: "～9%",
+    // 豪客多，客单价(AOV)高，但退货率也是隐形成本
+    premium: "++++", 
     position: "1.64376911562809m 0.9692231200150622m -1.4060847546521011m",
     normal: "0.6775186388869548m 0.4048332580339706m -0.6140672008423581m"
   }
@@ -567,16 +578,13 @@ export default function Home() {
                 
                 <div className="features" style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '0.6vw' }}>
                     <div style={{ fontSize: '0.85vw', lineHeight: 1.3 }}>
-                        <span style={{ fontWeight: 700 }}>产品基因诊断：</span><span style={{ fontSize: '0.8vw', color: '#444' }}>现有视觉/价格/竞争力评分与改进建议</span>
+                        <span style={{ fontWeight: 700 }}>基因诊断：</span><span style={{ fontSize: '0.8vw', color: '#444' }}>评估现有视觉评分，测算价格竞争力</span>
                     </div>
                     <div style={{ fontSize: '0.85vw', lineHeight: 1.3 }}>
-                        <span style={{ fontWeight: 700 }}>竞品红黑榜：</span><span style={{ fontSize: '0.8vw', color: '#444' }}>亚马逊/TikTok Top10 热销竞品深度拆解</span>
+                        <span style={{ fontWeight: 700 }}>竞品透视：</span><span style={{ fontSize: '0.8vw', color: '#444' }}>拆解亚马逊热销爆品，洞察 TikTok 流量来源</span>
                     </div>
                     <div style={{ fontSize: '0.85vw', lineHeight: 1.3 }}>
-                        <span style={{ fontWeight: 700 }}>可行性白皮书：</span><span style={{ fontSize: '0.8vw', color: '#444' }}>物流/财税/合规全链路成本测算模型</span>
-                    </div>
-                    <div style={{ fontSize: '0.85vw', lineHeight: 1.3 }}>
-                        <span style={{ fontWeight: 700 }}>战术落地Q&A：</span><span style={{ fontSize: '0.8vw', color: '#444' }}>渠道选择(独立站vs平台)与首月打法规划</span>
+                        <span style={{ fontWeight: 700 }}>战术规划：</span><span style={{ fontSize: '0.8vw', color: '#444' }}>明确平台渠道打法，制定首月落地路径</span>
                     </div>
                 </div>
                 
@@ -602,16 +610,13 @@ export default function Home() {
                 
                 <div className="features" style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '0.6vw' }}>
                     <div style={{ fontSize: '0.85vw', lineHeight: 1.3 }}>
-                        <span style={{ fontWeight: 700 }}>4个账号环境搭建与装修</span><span style={{ fontSize: '0.8vw', color: '#444' }}>(一次性基建)</span>
+                        <span style={{ fontWeight: 700 }}>基建部署：</span><span style={{ fontSize: '0.8vw', color: '#444' }}>配置4组独享环境，完成人设装修</span>
                     </div>
                     <div style={{ fontSize: '0.85vw', lineHeight: 1.3 }}>
-                        <span style={{ fontWeight: 700 }}>每月 24条</span><span style={{ fontSize: '0.8vw', color: '#444' }}>AI网红生活视频</span>
+                        <span style={{ fontWeight: 700 }}>内容填充：</span><span style={{ fontSize: '0.8vw', color: '#444' }}>产出AI网红生活流，制作爆款带货混剪</span>
                     </div>
                     <div style={{ fontSize: '0.85vw', lineHeight: 1.3 }}>
-                        <span style={{ fontWeight: 700 }}>每月 120条</span><span style={{ fontSize: '0.8vw', color: '#444' }}>爆款带货混剪</span>
-                    </div>
-                    <div style={{ fontSize: '0.85vw', lineHeight: 1.3 }}>
-                        <span style={{ fontWeight: 700 }}>全托管运营</span><span style={{ fontSize: '0.8vw', color: '#444' }}>挂车、评论维护等</span>
+                        <span style={{ fontWeight: 700 }}>运营托管：</span><span style={{ fontSize: '0.8vw', color: '#444' }}>负责挂车发布操作，维护评论区互动</span>
                     </div>
                 </div>
                 
@@ -636,16 +641,13 @@ export default function Home() {
                 
                 <div className="features" style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '0.6vw' }}>
                     <div style={{ fontSize: '0.85vw', lineHeight: 1.3 }}>
-                        <span style={{ fontWeight: 700 }}>投流托管：</span><span style={{ fontSize: '0.8vw', color: '#444' }}>ROI风控与每日监控</span>
+                        <span style={{ fontWeight: 700 }}>投流托管：</span><span style={{ fontSize: '0.8vw', color: '#444' }}>每日监控投放数据，严格把控 ROI 风控</span>
                     </div>
                     <div style={{ fontSize: '0.85vw', lineHeight: 1.3 }}>
-                        <span style={{ fontWeight: 700 }}>品牌视觉：</span><span style={{ fontSize: '0.8vw', color: '#444' }}>TVC大片 + 30张KV海报</span>
+                        <span style={{ fontWeight: 700 }}>品牌视觉：</span><span style={{ fontSize: '0.8vw', color: '#444' }}>打造电影级 TVC 大片，定制30张 KV 海报</span>
                     </div>
                     <div style={{ fontSize: '0.85vw', lineHeight: 1.3 }}>
-                        <span style={{ fontWeight: 700 }}>赠送：</span><span style={{ fontSize: '0.8vw', color: '#444' }}>100张 AI真人买家秀</span>
-                    </div>
-                    <div style={{ fontSize: '0.85vw', lineHeight: 1.3 }}>
-                        <span style={{ fontWeight: 700 }}>资产归还：</span><span style={{ fontSize: '0.8vw', color: '#444' }}>广告账户与人群包 100% 归还</span>
+                        <span style={{ fontWeight: 700 }}>资产归还：</span><span style={{ fontSize: '0.8vw', color: '#444' }}>移交广告账户权限，沉淀人群包资产</span>
                     </div>
                 </div>
                 
