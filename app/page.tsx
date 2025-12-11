@@ -384,7 +384,7 @@ export default function Home() {
          <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
             <defs>
                 <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
-                    <path d="M 40 0 L 0 0 0 40" fill="none" stroke="rgba(255,255,255,0.05)" strokeWidth="1"/>
+                    <path d="M 40 0 L 0 0 0 40" fill="none" stroke="rgba(0,0,0,0.05)" strokeWidth="1"/>
                 </pattern>
             </defs>
             <rect width="100%" height="100%" fill="url(#grid)" />
@@ -586,7 +586,7 @@ export default function Home() {
                 <div style={{ fontSize: '1.2vw', fontWeight: 800, marginBottom: '0.3vw' }}>矩阵运营托管</div>
                 <div style={{ fontSize: '0.7vw', color: '#666', marginBottom: '0.8vw' }}>Matrix Ops</div>
                 
-                <div style={{ background: 'rgba(240, 253, 244, 0.6)', padding: '0.6vw', borderRadius: '6px', marginBottom: '1vw', fontSize: '0.75vw', lineHeight: 1.3, color: '#166534' }}>
+                <div style={{ background: 'rgba(240, 253, 244, 0.6)', padding: '0.6vw', borderRadius: '6px', marginBottom: '1vw', fontSize: '0.75vw', lineHeight: 1.3, color: '#000' }}>
                     <span style={{ fontWeight: 700, display: 'block', marginBottom: '0.2vw' }}>针对人群</span>
                     需要搭建流量矩阵，从0到1起号的客户。
                 </div>

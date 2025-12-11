@@ -97,8 +97,6 @@ body::-webkit-scrollbar {
 }
 
 /* Home Section (bhome1) */
-.bhome1 {}
-
 .bhome1 .zuo {
     width: 44.375vw;
     height: 100vh;
@@ -163,6 +161,8 @@ body::-webkit-scrollbar {
     transform: translate(-50%, -50%);
     z-index: 0;
     opacity: 1;
+    mask-image: radial-gradient(circle, black 30%, transparent 70%);
+    -webkit-mask-image: radial-gradient(circle, black 30%, transparent 70%);
 }
 
 .bhome1 .you {
