@@ -380,20 +380,23 @@ export default function Home() {
   return (
     <div className="bhome-full">
       {/* Grid Background */}
-      <div className="grid-svg" ref={gridSvgRef}>
-         <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
-            <defs>
-                <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
-                    <path d="M 40 0 L 0 0 0 40" fill="none" stroke="rgba(0,0,0,0.05)" strokeWidth="1"/>
-                </pattern>
-            </defs>
-            <rect width="100%" height="100%" fill="url(#grid)" />
-         </svg>
+      <div className="grid-svg" ref={gridSvgRef} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+         <img 
+            src="https://www.super-i.cn/bpsf/img/bhome1-1.svg" 
+            alt="Background Grid" 
+            style={{ 
+                width: '100%', 
+                height: '100%', 
+                objectFit: 'cover',
+                opacity: 0.6 // Adjust opacity if needed to match previous subtlety
+            }} 
+         />
       </div>
 
-      {/* 3D Model Viewer */}
+      {/* @ts-ignore */}
       <model-viewer
         id="modelViewer"
+        style={{ opacity: isLoaded ? 1 : 0, transition: 'opacity 1s ease' }}
         src="https://www.super-i.cn/bpsf/img/earth.glb?v=1.0.1"
         camera-controls
         tone-mapping="neutral"
@@ -420,10 +423,11 @@ export default function Home() {
             <div className="HotspotAnnotation">{region.name}</div>
           </button>
         ))}
+      {/* @ts-ignore */}
       </model-viewer>
 
       {/* Home State (bhome1) */}
-      <div className="bhome1">
+      <div className="bhome1" style={{ opacity: isLoaded ? 1 : 0, transition: 'opacity 1s ease', pointerEvents: isLoaded ? 'auto' : 'none' }}>
         {/* Logo positioned absolutely at top-left */}
         <div style={{ position: 'absolute', top: '3vw', left: '4.166vw', zIndex: 10, display: 'flex', alignItems: 'center', gap: '0.5vw' }}>
             <div style={{ width: '1.5vw', height: '1.5vw', background: '#D4FE94', borderRadius: '4px' }}></div>
