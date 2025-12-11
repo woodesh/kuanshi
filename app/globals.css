@@ -12,15 +12,368 @@
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
+/* 
+  Target Page Styles 
+  Source: https://www.super-i.cn/bpsf/css/index.css
+*/
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+    background: var(--background);
+    color: var(--foreground);
+    font-family: "Inter", sans-serif;
+    overflow: hidden;
+}
+
+body::-webkit-scrollbar {
+    display: none;
+}
+
+/* 3D Model Viewer */
+#modelViewer {
+    width: 50vw;
+    height: 42vw;
+    position: absolute;
+    right: -4vw;
+    top: 10vh;
+    z-index: 2;
+}
+
+/* Hotspots */
+.Hotspot {
+    display: flex;
+    align-items: center;
+    border-radius: 20px;
+    background: rgba(0, 0, 0, 0.35);
+    padding: 0.833vw 1.041vw;
+    border: none;
+    color: #fff;
+    opacity: 0;
+    font-size: 0.833vw;
+    cursor: pointer;
+    transition: opacity 0.3s;
+}
+
+.Hotspot[data-visible] {
+    opacity: 1;
+}
+
+.Hotspot::before {
+    content: '';
+    display: block;
+    width: 1.25vw;
+    height: 1.25vw;
+    margin-right: 0.625vw;
+    /* Using a simple circle or custom SVG if image fails */
+    background: #D4FE94; 
+    border-radius: 50%;
+}
+
+.Hotspot.on {
+    transition: all ease .3s;
+    opacity: 0 !important;
+    pointer-events: none;
+}
+
+.progress-bar {
+    display: none;
+}
+
+/* Main Container */
+.bhome-full {
+    position: relative;
+    z-index: 1;
+    height: 100vh;
+    overflow: hidden;
+}
+
+/* Home Section (bhome1) */
+.bhome1 {}
+
+.bhome1 .zuo {
+    width: 44.375vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    margin-left: 4.166vw;
+    padding: 0 0 7.291vw;
+    position: relative;
+    z-index: 5;
+}
+
+.bhome1 .zuo .t1 {
+    letter-spacing: -0.033vw;
+    margin-bottom: 2.187vw;
+    font-size: 3.125vw; /* Approximate f_60 */
+    line-height: 1.1;
+    font-weight: bold;
+}
+
+.bhome1 .zuo .t1 span {
+    color: rgba(56, 56, 56, 0.40);
+    font-weight: 300;
+}
+
+.bhome1 .zuo .bhome1-btn {
+    padding: 0.885vw 1.25vw 0.885vw 1.093vw;
+    border-radius: 8px;
+    background: #D4FE94;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    width: fit-content;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 0.833vw;
+    font-weight: 600;
+}
+
+.bhome1 .zuo .bhome1-btn:hover {
+    background: #000;
+    color: #fff;
+}
+
+.bhome1 .zuo .bhome1-btn svg {
+    width: 1.25vw;
+    margin-left: 1.458vw;
+}
+
+.bhome1 .zuo .t3 {
+    color: rgba(56, 56, 56, 0.40);
+    margin-top: 2vw;
+    font-size: 0.73vw;
+}
+
+.grid-svg {
+    width: 50.104vw;
+    height: 50.104vw;
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 0;
+    opacity: 1;
+}
+
+.bhome1 .you {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    z-index: 5;
+    margin: 0 8.02vw 8.333vw 0;
+}
+
+.bhome1 .you .swiper {
+    width: 18.75vw;
+}
+
+.bhome1 .you .swiper .sec1 {
+    padding: 0.833vw;
+    border-radius: 16px;
+    background: rgba(0, 0, 0, 0.35);
+    color: rgba(255, 255, 255, 0.68);
+    letter-spacing: 0.037vw;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1vw;
+}
+
+.bhome1 .you .swiper .sec1 .name {
+    font-size: 1vw;
+    color: #fff;
+}
+
+.bhome1 .you .swiper .swiper-pagination {
+    display: flex;
+    gap: 4px;
+}
+
+.bhome1 .swiper-pagination-bullet {
+    width: 0.416vw;
+    height: 0.416vw;
+    border-radius: 8px;
+    overflow: hidden;
+    background: rgba(255, 255, 255, 0.24);
+    opacity: 1;
+    position: relative;
+    transition: all ease .3s;
+    cursor: pointer;
+}
+
+.bhome1 .swiper-pagination-bullet.active {
+    width: 2.083vw;
+    background: #fff;
+    opacity: 1;
+}
+
+.bhome1 .you .swiper .ul {
+    margin-top: 1.145vw;
+    padding: 0.833vw;
+    border-radius: 16px;
+    background: rgba(0, 0, 0, 0.35);
+}
+
+.bhome1 .you .swiper .ul .li {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    color: rgba(255, 255, 255, 0.68);
+    letter-spacing: 0.037vw;
+    padding-bottom: 0.416vw;
+    margin-bottom: 0.416vw;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.16);
+    font-size: 0.75vw;
+}
+
+.bhome1 .you .swiper .ul .li:last-child {
+    border-bottom: none;
+}
+
+/* CTA Section (bhome2) */
+.bhome2 {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 6;
+    padding: 0 5.729vw;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    pointer-events: none; /* Initially none */
+    background: rgba(0, 0, 0, 0); /* Managed by GSAP */
+}
+
+.bhome2 .zuo {
+    color: #FFF;
+    width: 41.458vw;
+    opacity: 0;
+}
+
+.bhome2 .zuo .t1 {
+    font-size: 1vw;
+    margin-bottom: 1vw;
+}
+
+.bhome2 .zuo .t2 {
+    margin-top: 2.291vw;
+    font-weight: 300;
+    font-size: 2.5vw;
+    line-height: 1.2;
+}
+
+.bhome2 .zuo .t3 {
+    margin-top: 0.833vw;
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 1.5vw;
+}
+
+.bhome2 .zuo .bhome2-btn {
+    width: max-content;
+    padding: 0.52vw 0.833vw;
+    margin-top: 1.666vw;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(0.156vw);
+    color: #fff;
+    display: block;
+    font-size: 0.9vw;
+    text-decoration: none;
+    transition: background 0.3s;
+}
+.bhome2 .zuo .bhome2-btn:hover{
+    background: #D4FE94;
+    color: #000;
+}
+
+.bhome2 .you {
+    width: 31.77vw;
+    display: flex;
+    flex-direction: column;
+    opacity: 0;
+}
+
+.bhome2 .you video {
+    border-radius: 20px;
+    overflow: hidden;
+    width: 100%;
+}
+
+.bhome2 .you .sec2 {
+    margin-top: 0.52vw;
+    border-radius: 16px;
+    background: rgba(0, 0, 0, 0.35);
+    padding: 0.833vw 1.875vw 1.666vw 0.781vw;
+    margin-left: auto;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 1vw;
+    cursor: pointer;
+}
+
+.bhome2 .you .sec2:hover {
+    background: rgba(0, 0, 0, 0.6);
+    transform: translateY(-2px)
+}
+
+.bhome2 .you .sec2 .icon {
+    width: 4.687vw;
+    transition: transform 0.3s ease;
+}
+
+.bhome2 .you .sec2 .t5 {
+    color: #fff;
+    font-size: 0.9vw;
+}
+
+/* Helper for utility classes used in original HTML */
+.f_12 { font-size: 12px; }
+.f_16 { font-size: 16px; }
+.f_32 { font-size: 32px; }
+.co-w { color: white; }
+.flex-xb-yc { display: flex; justify-content: space-between; align-items: center; }
+
+/* Mobile Media Query (simplified) */
+@media screen and (max-width: 768px) {
+    #modelViewer {
+        width: 100vw;
+        height: 98vw;
+        right: 0;
+        top: 10vh;
+    }
+    
+    .bhome1 .zuo {
+        width: 100%;
+        margin-left: 0;
+        padding: 0 5% 50px;
+        position: absolute;
+        left: 0;
+        bottom: 0;
+    }
+    
+    .bhome1 .zuo .t1 {
+        font-size: 34px;
+    }
+    
+    .bhome1 .you {
+        display: none; /* As per original CSS */
+    }
+    
+    .bhome2 {
+        flex-direction: column;
+        justify-content: center;
+        padding: 0 5%;
+    }
+    
+    .bhome2 .zuo, .bhome2 .you {
+        width: 100%;
+    }
+    
+    .bhome2 .zuo .t2 {
+        font-size: 24px;
+    }
 }
