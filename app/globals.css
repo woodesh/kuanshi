@@ -51,9 +51,19 @@ body::-webkit-scrollbar {
     font-size: 0.833vw;
     cursor: pointer;
     transition: opacity 0.3s;
+    position: absolute;
+    white-space: nowrap; /* Keep content in one line */
+    width: max-content; /* Prevent shrinking/stretching */
 }
 
-.Hotspot[data-visible] {
+.HotspotAnnotation {
+    color: inherit;
+    font-size: inherit;
+}
+
+/* Visibility */
+.Hotspot[data-visible],
+.Hotspot[visible] {
     opacity: 1;
 }
 
@@ -68,8 +78,8 @@ body::-webkit-scrollbar {
     border-radius: 50%;
 }
 
+/* Hide hotspots when .on class is added (e.g. during scroll transition) */
 .Hotspot.on {
-    transition: all ease .3s;
     opacity: 0 !important;
     pointer-events: none;
 }

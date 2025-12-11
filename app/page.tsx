@@ -13,7 +13,8 @@ const regions = [
     cagr: "+10.3%",
     penetration: "～20%",
     premium: "++++",
-    position: "-0.5486480439652968m 1.4775669874312245m -1.7725976550136735m"
+    position: "-0.5486480439652968m 1.4775669874312245m -1.7725976550136735m",
+    normal: "-0.2657068842640681m 0.6147703602713593m -0.7426016804360897m"
   },
   {
     id: 1,
@@ -22,7 +23,8 @@ const regions = [
     cagr: "+11.14%",
     penetration: "～12.8%",
     premium: "++++",
-    position: "-1.0057529136436034m -0.12986786027995423m -2.1424169404943227m"
+    position: "-1.0057529136436034m -0.12986786027995423m -2.1424169404943227m",
+    normal: "-0.42639945106977467m -0.07347541574399662m -0.9015458232439668m"
   },
   {
     id: 2,
@@ -31,7 +33,8 @@ const regions = [
     cagr: "+5.0%",
     penetration: "～16.3%",
     premium: "+++",
-    position: "-0.29709103452649344m 1.5134071865400724m 1.795262940213165m"
+    position: "-0.29709103452649344m 1.5134071865400724m 1.795262940213165m",
+    normal: "-0.11116269599976415m 0.6527212881755552m 0.7493982752719064m"
   },
   {
     id: 3,
@@ -40,7 +43,8 @@ const regions = [
     cagr: "+7%",
     penetration: "～7.9-29.8%",
     premium: "+++-",
-    position: "1.4283934306386246m 1.8894230850450324m 0.055148412763570576m"
+    position: "1.4283934306386246m 1.8894230850450324m 0.055148412763570576m",
+    normal: "0.6149504465772905m 0.7879868319301883m 0.030210941048180503m"
   },
   {
     id: 4,
@@ -49,7 +53,8 @@ const regions = [
     cagr: "+19%",
     penetration: "<10%",
     premium: "++++",
-    position: "1.383549740055114m -0.21364446293400108m 1.9065582926204068m"
+    position: "1.383549740055114m -0.21364446293400108m 1.9065582926204068m",
+    normal: "0.5940892594672141m -0.07347600365567172m 0.8010363466613042m"
   },
   {
     id: 5,
@@ -58,7 +63,8 @@ const regions = [
     cagr: "+14.28%",
     penetration: "～8-15%",
     premium: "+++++",
-    position: "1.64376911562809m 0.9692231200150622m -1.4060847546521011m"
+    position: "1.64376911562809m 0.9692231200150622m -1.4060847546521011m",
+    normal: "0.6775186388869548m 0.4048332580339706m -0.6140672008423581m"
   }
 ];
 
@@ -131,17 +137,12 @@ export default function Home() {
     setActiveIndex(index);
     mv.autoRotate = false;
     
-    // Parse position: "x y z"
-    // The original logic:
-    // const posStr = hotspot.dataset.position.replace(/m/g,'');
-    // const [x,y,z] = posStr.split(' ').map(Number);
-    // let longitude = Math.atan2(x,z) * 180 / Math.PI;
-    // longitude += 15;
-    
     const cleanPos = positionStr.replace(/m/g, '');
     const [x, y, z] = cleanPos.split(' ').map(Number);
     let longitude = Math.atan2(x, z) * 180 / Math.PI;
-    longitude += 15; // Offset from original script
+    // longitude += 15; // Offset from original script - Removed based on user feedback "needs to be centered"
+    
+    console.log(`Hotspot Clicked: ${index}, Pos: ${positionStr}, Calc Longitude: ${longitude}`);
 
     mv.cameraOrbit = `${longitude}deg 90deg 10m`;
     mv.interpolationDecay = 200;
@@ -154,16 +155,23 @@ export default function Home() {
 
   // Scroll Interaction Logic (The "SetPage" equivalent)
   const setPage = (direction: number) => {
-    if (!isLoaded) return;
+    if (!isLoaded) {
+        console.warn('Scroll ignored: Not loaded yet');
+        return;
+    }
     
     const mv = modelViewerRef.current;
-    if (!mv) return;
+    if (!mv) {
+        console.warn('Scroll ignored: No model viewer');
+        return;
+    }
 
     if (isAnimatingRef.current) {
-      currentAnimationsRef.current.forEach(anim => anim.kill());
-      currentAnimationsRef.current = [];
-      if (lockTimeoutRef.current) clearTimeout(lockTimeoutRef.current);
+        console.log('Scroll ignored: Animating');
+        return;
     }
+    
+    console.log('Setting page direction:', direction);
 
     isAnimatingRef.current = true;
     if (lockTimeoutRef.current) clearTimeout(lockTimeoutRef.current);
@@ -305,6 +313,7 @@ export default function Home() {
   useEffect(() => {
     const handleWheel = throttle((e: WheelEvent) => {
       const delta = e.deltaY;
+      console.log('Wheel delta:', delta);
       // Threshold from original: 20 or 30
       if (Math.abs(delta) > 20) {
         setPage(delta > 0 ? 1 : -1);
@@ -319,24 +328,20 @@ export default function Home() {
     const handleTouchEnd = (e: TouchEvent) => {
         const endY = e.changedTouches[0].clientY;
         const deltaY = endY - startY; // Swipe down (negative delta) vs Swipe up (positive delta)
-        // Wait, standard scroll:
-        // Swipe Up (finger moves up) -> content moves down -> deltaY < 0 -> Scroll Down (Direction 1)
-        // Swipe Down (finger moves down) -> content moves up -> deltaY > 0 -> Scroll Up (Direction -1)
-        // Original logic: handleScroll(deltaY < 0 ? 1 : -1);
         
         if (Math.abs(deltaY) > 30) {
             setPage(deltaY < 0 ? 1 : -1);
         }
     };
 
-    window.addEventListener('wheel', handleWheel, { passive: false });
-    window.addEventListener('touchstart', handleTouchStart, { passive: false });
-    window.addEventListener('touchend', handleTouchEnd, { passive: false });
+    window.addEventListener('wheel', handleWheel, { passive: false, capture: true });
+    window.addEventListener('touchstart', handleTouchStart, { passive: false, capture: true });
+    window.addEventListener('touchend', handleTouchEnd, { passive: false, capture: true });
 
     return () => {
-      window.removeEventListener('wheel', handleWheel);
-      window.removeEventListener('touchstart', handleTouchStart);
-      window.removeEventListener('touchend', handleTouchEnd);
+      window.removeEventListener('wheel', handleWheel, { capture: true });
+      window.removeEventListener('touchstart', handleTouchStart, { capture: true });
+      window.removeEventListener('touchend', handleTouchEnd, { capture: true });
     };
   }, [isLoaded]);
 
@@ -365,6 +370,18 @@ export default function Home() {
   }, []);
 
   const activeData = regions[activeIndex];
+
+  // Handle active class manually to avoid re-rendering and losing model-viewer transforms
+  useEffect(() => {
+    const buttons = document.querySelectorAll('.Hotspot');
+    buttons.forEach((btn, index) => {
+        if (index === activeIndex) {
+            btn.classList.add('selected');
+        } else {
+            btn.classList.remove('selected');
+        }
+    });
+  }, [activeIndex]);
 
   return (
     <div className="bhome-full">
@@ -399,7 +416,7 @@ export default function Home() {
         {regions.map((region, index) => (
           <button
             key={region.id}
-            className={`Hotspot ${index === activeIndex ? 'selected' : ''}`}
+            className="Hotspot"
             slot={`hotspot-${region.id + 2}`}
             data-position={region.position}
             data-normal={region.normal}
