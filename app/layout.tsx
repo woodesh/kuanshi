@@ -14,8 +14,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Super-i | 一键生成品牌出海策略工具",
-  description: "集顶级品牌策略方法论、数据洞察与执行路径于一体，让正确策略的方向，掌握每一分的投放。",
+  title: "款世科技",
+  description: "",
 };
 
  
