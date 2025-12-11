@@ -430,17 +430,29 @@ export default function Home() {
 
       {/* Home State (bhome1) */}
       <div className="bhome1">
+        {/* Logo positioned absolutely at top-left */}
+        <div style={{ position: 'absolute', top: '3vw', left: '4.166vw', zIndex: 10, display: 'flex', alignItems: 'center', gap: '0.5vw' }}>
+            <div style={{ width: '1.5vw', height: '1.5vw', background: '#D4FE94', borderRadius: '4px' }}></div>
+            <span style={{ fontSize: '1.2vw', fontWeight: 800, color: '#000', letterSpacing: '-0.02em' }}>款世科技</span>
+        </div>
+
         <div className="zuo" ref={bhome1ZuoRef}>
-          <div className="t1">
-            Global<br />
-            Expansion <span>Map</span>
+          <div className="t1" style={{ fontSize: '1.2vw', fontWeight: 600, marginBottom: '1.5vw', letterSpacing: '0.05em', opacity: 0.6 }}>
+            QUANSE AI · 品牌出海策略引擎
           </div>
-          <div className="bhome1-btn">
-            开始你的全球化之旅
-            <ArrowRight size={16} />
+          <div className="t2" style={{ fontSize: '3.8vw', fontWeight: 'bold', lineHeight: 1.1, marginBottom: '2vw', letterSpacing: '-0.02em' }}>
+            以数据定义款式，<br />
+            用算法连接世界。
           </div>
-          <div className="t3">
-            Pithy AI：无需经验，搭建属于你的国际化品牌进阶之路
+          <div className="t3" style={{ fontSize: '1.1vw', lineHeight: 1.6, color: 'rgba(0,0,0,0.6)', marginBottom: '3vw', maxWidth: '32vw' }}>
+            集顶级品牌策略与 AIGC 生产力于一体，<br />
+            让每一次出海，都是对市场的精准降维打击。
+          </div>
+          
+          {/* Removed button, adjusted layout spacing */}
+          
+          <div className="t4" style={{ marginTop: '1vw', fontSize: '0.9vw', color: 'rgba(0,0,0,0.4)', borderLeft: '2px solid #D4FE94', paddingLeft: '1vw' }}>
+             QUANSE AI: 无需经验，重塑属于你的全球化商业基因。
           </div>
         </div>
 
@@ -484,17 +496,41 @@ export default function Home() {
       {/* CTA State (bhome2) */}
       <div className="bhome2" ref={bhome2Ref}>
         <div className="zuo" ref={bhome2ZuoRef}>
-          <div className="t1 f_16">查看我们的案例</div>
-          <div className="t2">
-            集顶级品牌策略方法论、<br />
-            数据洞察与执行路径于一体<br />
-            让正确策略的方向，掌握每一分的投放。
+          <div className="t1 f_16" style={{ marginBottom: '2vw', opacity: 0.8 }}>全链路增长生态 (The Growth Ecosystem)</div>
+          
+          <div className="solution-list" style={{ display: 'flex', flexDirection: 'column', gap: '2vw' }}>
+             {/* Item 01 */}
+             <div className="item">
+                <div className="item-title" style={{ fontSize: '1.2vw', fontWeight: 'bold', marginBottom: '0.5vw' }}>01. 视觉基建 (Visual Infrastructure)</div>
+                <div className="item-desc" style={{ fontSize: '0.9vw', lineHeight: 1.5, opacity: 0.9, marginBottom: '0.3vw' }}>
+                    <span style={{ fontWeight: 600 }}>[核心：重塑成本结构]</span> 利用生成式 AI，将原本昂贵的“商拍”降维成毫秒级的代码运算。
+                </div>
+                <div className="item-tags" style={{ fontSize: '0.8vw', opacity: 0.6 }}>#AI商拍 #场景合成 #无限弹药</div>
+             </div>
+
+             {/* Item 02 */}
+             <div className="item">
+                <div className="item-title" style={{ fontSize: '1.2vw', fontWeight: 'bold', marginBottom: '0.5vw' }}>02. 流量矩阵 (Traffic Matrix)</div>
+                <div className="item-desc" style={{ fontSize: '0.9vw', lineHeight: 1.5, opacity: 0.9, marginBottom: '0.3vw' }}>
+                    <span style={{ fontWeight: 600 }}>[核心：饱和式攻击]</span> “2+2” 矩阵模型。用 AI 人设建立信任，用暴力分发捕获流量。
+                </div>
+                <div className="item-tags" style={{ fontSize: '0.8vw', opacity: 0.6 }}>#账号托管 #自动获客 #算法博弈</div>
+             </div>
+
+             {/* Item 03 */}
+             <div className="item">
+                <div className="item-title" style={{ fontSize: '1.2vw', fontWeight: 'bold', marginBottom: '0.5vw' }}>03. 增长风控 (Growth Certainty)</div>
+                <div className="item-desc" style={{ fontSize: '0.9vw', lineHeight: 1.5, opacity: 0.9, marginBottom: '0.3vw' }}>
+                    <span style={{ fontWeight: 600 }}>[核心：确定性回报]</span> 拒绝盲目烧钱。从素材 CTR 测款到全案投流，建立 ROI 数据护城河。
+                </div>
+                <div className="item-tags" style={{ fontSize: '0.8vw', opacity: 0.6 }}>#投流托管 #品牌溢价 #资产沉淀</div>
+             </div>
           </div>
-          <div className="t3">Pithy AI：无需经验，搭建属于你的国际化品牌进阶之路</div>
-          <a href="#" className="bhome2-btn">浏览方案</a>
+
+          <a href="#" className="bhome2-btn" style={{ marginTop: '3vw', background: '#D4FE94', color: '#000', fontWeight: 600 }}>开启企业基因诊断</a>
         </div>
 
-        <div className="you" ref={bhome2YouRef}>
+        <div className="you" ref={bhome2YouRef} style={{ width: '45vw' }}>
           <video 
             width='100%' 
             loop 
@@ -502,19 +538,8 @@ export default function Home() {
             autoPlay 
             playsInline
             src='https://www.super-i.cn/bpsf/img/texiao3.mp4' 
+            style={{ borderRadius: '20px', boxShadow: '0 20px 50px rgba(0,0,0,0.2)' }}
           />
-          <div className="sec2" id="joinProBtn">
-             <div className="icon">
-                {/* Simple icon placeholder */}
-                <div style={{ width: '40px', height: '40px', background: '#D4FE94', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                    <Check size={24} color="#000" />
-                </div>
-             </div>
-             <div className="t5 f_16 co-w">
-               加入超级会员，<br />
-               拥有两次免费试用机会！
-             </div>
-          </div>
         </div>
       </div>
     </div>
