@@ -153,6 +153,14 @@ export default function Home() {
     }, 3000);
   };
 
+  const [pageIndex, setPageIndex] = useState(0);
+  const pageIndexRef = useRef(0);
+  const bhome3Ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    pageIndexRef.current = pageIndex;
+  }, [pageIndex]);
+
   // Scroll Interaction Logic (The "SetPage" equivalent)
   const setPage = (direction: number) => {
     if (!isLoaded) {
@@ -171,11 +179,21 @@ export default function Home() {
         return;
     }
     
-    console.log('Setting page direction:', direction);
+    const currentIndex = pageIndexRef.current;
+    let nextIndex = currentIndex + direction;
+
+    // Clamp index
+    if (nextIndex < 0) nextIndex = 0;
+    if (nextIndex > 2) nextIndex = 2;
+
+    if (nextIndex === currentIndex) return;
+
+    console.log(`Transitioning: ${currentIndex} -> ${nextIndex}`);
 
     isAnimatingRef.current = true;
-    if (lockTimeoutRef.current) clearTimeout(lockTimeoutRef.current);
+    setPageIndex(nextIndex);
     
+    if (lockTimeoutRef.current) clearTimeout(lockTimeoutRef.current);
     // Safety unlock
     lockTimeoutRef.current = setTimeout(() => {
       isAnimatingRef.current = false;
@@ -187,107 +205,15 @@ export default function Home() {
     const offsetRight = winW - (mv.offsetWidth || 0);
     const offsetTop = winH - (mv.offsetHeight || 0);
 
-    if (direction === -1) {
-      // Go to Home (Up Scroll)
-      const tl1 = gsap.to(bhome2Ref.current, {
-        background: 'rgba(0, 0, 0, 0)',
-        pointerEvents: 'none',
-        duration: 0.3,
-        overwrite: 'auto'
-      });
-      const tl2 = gsap.to(bhome2ZuoRef.current, {
-        opacity: 0,
-        clipPath: 'inset(100% 0)',
-        duration: 0.3,
-        overwrite: 'auto'
-      });
-      const tl3 = gsap.to(bhome2YouRef.current, {
-        opacity: 0,
-        clipPath: 'inset(100% 0)',
-        duration: 0.3,
-        overwrite: 'auto'
-      });
-
-      const tl4 = gsap.to(mv, {
-        scale: 1,
-        right: pc ? '-4vw' : 0,
-        top: '10vh', // Original: winH / 10 which is roughly 10vh
-        duration: 1,
-        overwrite: 'auto',
-        onComplete: function () {
-            // Show hotspots
-            const hotspots = document.querySelectorAll('.Hotspot');
-            hotspots.forEach(el => el.classList.remove('on'));
-
-            gsap.to(bhome1ZuoRef.current, {
-                opacity: 1,
-                pointerEvents: 'auto',
-                clipPath: 'inset(0 0%)',
-                duration: 0.2,
-                overwrite: 'auto',
-                onComplete: () => {
-                    isAnimatingRef.current = false;
-                    if (lockTimeoutRef.current) clearTimeout(lockTimeoutRef.current);
-                }
-            });
-            gsap.to(bhome1YouRef.current, {
-                opacity: 1,
-                pointerEvents: 'auto',
-                duration: 0.6,
-                overwrite: 'auto',
-            });
-            gsap.to(gridSvgRef.current, {
-                opacity: 1,
-                duration: 0.6,
-                overwrite: 'auto'
-            });
-        }
-      });
+    // 0 -> 1 (Home to CTA)
+    if (currentIndex === 0 && nextIndex === 1) {
+      const tl1 = gsap.to(bhome1ZuoRef.current, { opacity: 0, pointerEvents: 'none', clipPath: 'inset(0 100%)', duration: 0.3, overwrite: 'auto' });
+      const tl2 = gsap.to(bhome1YouRef.current, { opacity: 0, pointerEvents: 'none', duration: 0.3, overwrite: 'auto' });
+      const tl3 = gsap.to(gridSvgRef.current, { opacity: 0, duration: 0.3, overwrite: 'auto' });
       
-      currentAnimationsRef.current.push(tl1, tl2, tl3, tl4);
-    }
-
-    if (direction === 1) {
-      // Go to CTA (Down Scroll)
-      const tl1 = gsap.to(bhome1ZuoRef.current, {
-        opacity: 0,
-        pointerEvents: 'none',
-        clipPath: 'inset(0 100%)',
-        duration: 0.3,
-        overwrite: 'auto'
-      });
-      const tl2 = gsap.to(bhome1YouRef.current, {
-        opacity: 0,
-        pointerEvents: 'none',
-        duration: 0.3,
-        overwrite: 'auto'
-      });
-      const tl3 = gsap.to(gridSvgRef.current, {
-        opacity: 0,
-        duration: 0.3,
-        overwrite: 'auto'
-      });
-      const tl4 = gsap.to(bhome2Ref.current, {
-        background: 'rgba(0, 0, 0, 0.35)',
-        pointerEvents: 'auto',
-        delay: 0.3,
-        duration: 1,
-        overwrite: 'auto'
-      });
-      const tl5 = gsap.to(bhome2ZuoRef.current, {
-        opacity: 1,
-        clipPath: 'inset(0% 0)',
-        delay: 0.3,
-        duration: 1.2,
-        overwrite: 'auto'
-      });
-      const tl6 = gsap.to(bhome2YouRef.current, {
-        opacity: 1,
-        clipPath: 'inset(0% 0)',
-        delay: 0.3,
-        duration: 1.2,
-        overwrite: 'auto'
-      });
+      const tl4 = gsap.to(bhome2Ref.current, { background: 'rgba(0, 0, 0, 0.35)', pointerEvents: 'auto', delay: 0.3, duration: 1, overwrite: 'auto' });
+      const tl5 = gsap.to(bhome2ZuoRef.current, { opacity: 1, clipPath: 'inset(0% 0)', delay: 0.3, duration: 1.2, overwrite: 'auto' });
+      const tl6 = gsap.to(bhome2YouRef.current, { opacity: 1, clipPath: 'inset(0% 0)', delay: 0.3, duration: 1.2, overwrite: 'auto' });
 
       // Hide hotspots
       const hotspots = document.querySelectorAll('.Hotspot');
@@ -299,13 +225,81 @@ export default function Home() {
         top: offsetTop / 2,
         duration: 1,
         overwrite: 'auto',
-        onComplete: () => {
-            isAnimatingRef.current = false;
-            if (lockTimeoutRef.current) clearTimeout(lockTimeoutRef.current);
+        onComplete: () => { isAnimatingRef.current = false; }
+      });
+      currentAnimationsRef.current.push(tl1, tl2, tl3, tl4, tl5, tl6, tl7);
+    }
+    // 1 -> 0 (CTA to Home)
+    else if (currentIndex === 1 && nextIndex === 0) {
+      const tl1 = gsap.to(bhome2Ref.current, { background: 'rgba(0, 0, 0, 0)', pointerEvents: 'none', duration: 0.3, overwrite: 'auto' });
+      const tl2 = gsap.to(bhome2ZuoRef.current, { opacity: 0, clipPath: 'inset(100% 0)', duration: 0.3, overwrite: 'auto' });
+      const tl3 = gsap.to(bhome2YouRef.current, { opacity: 0, clipPath: 'inset(100% 0)', duration: 0.3, overwrite: 'auto' });
+
+      const tl4 = gsap.to(mv, {
+        scale: 1,
+        right: pc ? '-4vw' : 0,
+        top: '10vh',
+        duration: 1,
+        overwrite: 'auto',
+        onComplete: function () {
+            const hotspots = document.querySelectorAll('.Hotspot');
+            hotspots.forEach(el => el.classList.remove('on'));
+            gsap.to(bhome1ZuoRef.current, { opacity: 1, pointerEvents: 'auto', clipPath: 'inset(0 0%)', duration: 0.2, overwrite: 'auto', onComplete: () => { isAnimatingRef.current = false; } });
+            gsap.to(bhome1YouRef.current, { opacity: 1, pointerEvents: 'auto', duration: 0.6, overwrite: 'auto' });
+            gsap.to(gridSvgRef.current, { opacity: 1, duration: 0.6, overwrite: 'auto' });
         }
       });
-      
-      currentAnimationsRef.current.push(tl1, tl2, tl3, tl4, tl5, tl6, tl7);
+      currentAnimationsRef.current.push(tl1, tl2, tl3, tl4);
+    }
+    // 1 -> 2 (CTA to Pricing)
+    else if (currentIndex === 1 && nextIndex === 2) {
+       // Hide CTA
+       const tl1 = gsap.to(bhome2ZuoRef.current, { opacity: 0, duration: 0.5, overwrite: 'auto' });
+       const tl2 = gsap.to(bhome2YouRef.current, { opacity: 0, duration: 0.5, overwrite: 'auto' });
+       
+       // Adjust Earth for Background (Dim it slightly and keep it centered)
+       const tl3 = gsap.to(mv, { 
+           opacity: 0.6, 
+           scale: 1.2, // Slightly smaller than CTA to fit background better
+           filter: 'blur(2px)', // Optional: blur slightly to focus on content
+           duration: 1, 
+           overwrite: 'auto', 
+           pointerEvents: 'none' 
+       });
+       
+       // Show Pricing
+       const tl4 = gsap.to(bhome3Ref.current, { 
+           opacity: 1, 
+           pointerEvents: 'auto', 
+           duration: 0.8, 
+           delay: 0.3,
+           overwrite: 'auto',
+           onComplete: () => { isAnimatingRef.current = false; } 
+       });
+       
+       currentAnimationsRef.current.push(tl1, tl2, tl3, tl4);
+    }
+    // 2 -> 1 (Pricing to CTA)
+    else if (currentIndex === 2 && nextIndex === 1) {
+       // Hide Pricing
+       const tl1 = gsap.to(bhome3Ref.current, { opacity: 0, pointerEvents: 'none', duration: 0.5, overwrite: 'auto' });
+       
+       // Restore Earth for CTA
+       const tl2 = gsap.to(mv, { 
+           opacity: 1, 
+           scale: 1.5, 
+           filter: 'blur(0px)',
+           duration: 0.8, 
+           delay: 0.3, 
+           overwrite: 'auto', 
+           pointerEvents: 'auto' 
+       });
+       
+       // Show CTA
+       const tl3 = gsap.to(bhome2ZuoRef.current, { opacity: 1, duration: 0.8, delay: 0.3, overwrite: 'auto' });
+       const tl4 = gsap.to(bhome2YouRef.current, { opacity: 1, duration: 0.8, delay: 0.3, overwrite: 'auto', onComplete: () => { isAnimatingRef.current = false; } });
+       
+       currentAnimationsRef.current.push(tl1, tl2, tl3, tl4);
     }
   };
 
@@ -433,7 +427,13 @@ export default function Home() {
         {/* Logo positioned absolutely at top-left */}
         <div style={{ position: 'absolute', top: '3vw', left: '4.166vw', zIndex: 10, display: 'flex', alignItems: 'center', gap: '0.5vw' }}>
             <div style={{ width: '1.5vw', height: '1.5vw', background: '#D4FE94', borderRadius: '4px' }}></div>
-            <span style={{ fontSize: '1.2vw', fontWeight: 800, color: '#000', letterSpacing: '-0.02em' }}>款世科技</span>
+            <span style={{ 
+                fontSize: '1.2vw', 
+                fontWeight: 800, 
+                color: pageIndex > 0 ? '#fff' : '#000', // White on pages 2 & 3, Black on Home
+                letterSpacing: '-0.02em',
+                transition: 'color 0.5s ease'
+            }}>款世科技</span>
         </div>
 
         <div className="zuo" ref={bhome1ZuoRef}>
@@ -541,6 +541,113 @@ export default function Home() {
             style={{ borderRadius: '20px', boxShadow: '0 20px 50px rgba(0,0,0,0.2)' }}
           />
         </div>
+      </div>
+      {/* Pricing State (bhome3) */}
+      <div className="bhome3" ref={bhome3Ref} style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', zIndex: 7, pointerEvents: 'none', opacity: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '0 5vw', background: 'transparent' }}>
+         <div className="pricing-container" style={{ display: 'flex', gap: '1.5vw', alignItems: 'stretch', justifyContent: 'center', width: '85%' }}> {/* Reduced width from 100% to 85% to make cards slimmer */}
+            {/* Card 1: Entry */}
+            <div className="pricing-card" style={{ flex: 1, padding: '1.5vw', borderRadius: '16px', background: 'rgba(255, 255, 255, 0.65)', backdropFilter: 'blur(20px)', boxShadow: '0 10px 40px rgba(0,0,0,0.05)', border: '1px solid rgba(255,255,255,0.3)', display: 'flex', flexDirection: 'column' }}>
+                <div style={{ fontSize: '0.8vw', color: '#333', marginBottom: '0.3vw', fontWeight: 600 }}>入门版</div>
+                <div style={{ fontSize: '1.2vw', fontWeight: 800, marginBottom: '0.3vw' }}>跨境出海·战略洞察包</div>
+                <div style={{ fontSize: '0.7vw', color: '#666', marginBottom: '0.8vw' }}>DeepResearch Kit</div>
+                
+                <div style={{ background: 'rgba(255,255,255,0.5)', padding: '0.6vw', borderRadius: '6px', marginBottom: '1vw', fontSize: '0.75vw', lineHeight: 1.3, color: '#333' }}>
+                    <span style={{ fontWeight: 700, display: 'block', marginBottom: '0.2vw', color: '#000' }}>针对人群</span>
+                    处于转型期、犹豫是否出海、需要数据支撑决策的工厂老板。
+                </div>
+
+                <div style={{ fontSize: '1.8vw', fontWeight: 800, marginBottom: '0.1vw' }}>¥3,980</div>
+                <div style={{ fontSize: '0.7vw', color: '#555', marginBottom: '1.2vw' }}>一次性付费 / One-time</div>
+                
+                <div style={{ borderTop: '1px solid rgba(0,0,0,0.1)', margin: '0 -1.5vw 1.2vw -1.5vw' }}></div>
+                
+                <div className="features" style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '0.6vw' }}>
+                    <div style={{ fontSize: '0.85vw', lineHeight: 1.3 }}>
+                        <span style={{ fontWeight: 700 }}>产品基因诊断：</span><span style={{ fontSize: '0.8vw', color: '#444' }}>现有视觉/价格/竞争力评分与改进建议</span>
+                    </div>
+                    <div style={{ fontSize: '0.85vw', lineHeight: 1.3 }}>
+                        <span style={{ fontWeight: 700 }}>竞品红黑榜：</span><span style={{ fontSize: '0.8vw', color: '#444' }}>亚马逊/TikTok Top10 热销竞品深度拆解</span>
+                    </div>
+                    <div style={{ fontSize: '0.85vw', lineHeight: 1.3 }}>
+                        <span style={{ fontWeight: 700 }}>可行性白皮书：</span><span style={{ fontSize: '0.8vw', color: '#444' }}>物流/财税/合规全链路成本测算模型</span>
+                    </div>
+                    <div style={{ fontSize: '0.85vw', lineHeight: 1.3 }}>
+                        <span style={{ fontWeight: 700 }}>战术落地Q&A：</span><span style={{ fontSize: '0.8vw', color: '#444' }}>渠道选择(独立站vs平台)与首月打法规划</span>
+                    </div>
+                </div>
+                
+                <button style={{ marginTop: '1.5vw', width: '100%', padding: '0.8vw', borderRadius: '8px', background: 'rgba(255,255,255,0.8)', border: '1px solid rgba(0,0,0,0.1)', fontWeight: 600, cursor: 'pointer', fontSize: '0.9vw' }}>获取样本报告</button>
+            </div>
+
+            {/* Card 2: Growth (Recommended) */}
+            <div className="pricing-card recommended" style={{ flex: 1, padding: '1.5vw', borderRadius: '16px', background: 'rgba(255, 255, 255, 0.75)', backdropFilter: 'blur(20px)', boxShadow: '0 20px 60px rgba(0,0,0,0.1)', border: '2px solid #D4FE94', display: 'flex', flexDirection: 'column', position: 'relative', transform: 'scale(1.05)', zIndex: 2 }}>
+                <div style={{ position: 'absolute', top: '-0.8vw', left: '50%', transform: 'translateX(-50%)', background: '#D4FE94', padding: '0.3vw 0.8vw', borderRadius: '20px', fontSize: '0.7vw', fontWeight: 700, boxShadow: '0 4px 10px rgba(0,0,0,0.1)' }}>推荐 / Best Value</div>
+                <div style={{ fontSize: '0.8vw', color: '#333', marginBottom: '0.3vw', fontWeight: 600 }}>增长版 (Growth)</div>
+                <div style={{ fontSize: '1.2vw', fontWeight: 800, marginBottom: '0.3vw' }}>矩阵运营托管</div>
+                <div style={{ fontSize: '0.7vw', color: '#666', marginBottom: '0.8vw' }}>Matrix Ops</div>
+                
+                <div style={{ background: 'rgba(240, 253, 244, 0.6)', padding: '0.6vw', borderRadius: '6px', marginBottom: '1vw', fontSize: '0.75vw', lineHeight: 1.3, color: '#166534' }}>
+                    <span style={{ fontWeight: 700, display: 'block', marginBottom: '0.2vw' }}>针对人群</span>
+                    需要搭建流量矩阵，从0到1起号的客户。
+                </div>
+
+                <div style={{ fontSize: '1.8vw', fontWeight: 800, marginBottom: '0.1vw' }}>询价 / 月费制</div>
+                <div style={{ fontSize: '0.7vw', color: '#555', marginBottom: '1.2vw' }}>Custom / Monthly Retainer</div>
+                
+                <div style={{ borderTop: '1px solid rgba(0,0,0,0.1)', margin: '0 -1.5vw 1.2vw -1.5vw' }}></div>
+                
+                <div className="features" style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '0.6vw' }}>
+                    <div style={{ fontSize: '0.85vw', lineHeight: 1.3 }}>
+                        <span style={{ fontWeight: 700 }}>4个账号环境搭建与装修</span><span style={{ fontSize: '0.8vw', color: '#444' }}>(一次性基建)</span>
+                    </div>
+                    <div style={{ fontSize: '0.85vw', lineHeight: 1.3 }}>
+                        <span style={{ fontWeight: 700 }}>每月 24条</span><span style={{ fontSize: '0.8vw', color: '#444' }}>AI网红生活视频</span>
+                    </div>
+                    <div style={{ fontSize: '0.85vw', lineHeight: 1.3 }}>
+                        <span style={{ fontWeight: 700 }}>每月 120条</span><span style={{ fontSize: '0.8vw', color: '#444' }}>爆款带货混剪</span>
+                    </div>
+                    <div style={{ fontSize: '0.85vw', lineHeight: 1.3 }}>
+                        <span style={{ fontWeight: 700 }}>全托管运营</span><span style={{ fontSize: '0.8vw', color: '#444' }}>挂车、评论维护等</span>
+                    </div>
+                </div>
+                
+                <button style={{ marginTop: '1.5vw', width: '100%', padding: '0.8vw', borderRadius: '8px', background: '#D4FE94', border: 'none', fontWeight: 600, cursor: 'pointer', fontSize: '0.9vw' }}>预约企业诊断</button>
+            </div>
+
+            {/* Card 3: Scale */}
+            <div className="pricing-card" style={{ flex: 1, padding: '1.5vw', borderRadius: '16px', background: 'rgba(255, 255, 255, 0.65)', backdropFilter: 'blur(20px)', boxShadow: '0 10px 40px rgba(0,0,0,0.05)', border: '1px solid rgba(255,255,255,0.3)', display: 'flex', flexDirection: 'column' }}>
+                <div style={{ fontSize: '0.8vw', color: '#333', marginBottom: '0.3vw', fontWeight: 600 }}>品牌版 (Scale)</div>
+                <div style={{ fontSize: '1.2vw', fontWeight: 800, marginBottom: '0.3vw' }}>全案增长</div>
+                <div style={{ fontSize: '0.7vw', color: '#666', marginBottom: '0.8vw' }}>Pro Scale</div>
+                
+                <div style={{ background: 'rgba(255,255,255,0.5)', padding: '0.6vw', borderRadius: '6px', marginBottom: '1vw', fontSize: '0.75vw', lineHeight: 1.3, color: '#333' }}>
+                    <span style={{ fontWeight: 700, display: 'block', marginBottom: '0.2vw', color: '#000' }}>针对人群</span>
+                    需要投流放量、做品牌溢价的大客户。
+                </div>
+
+                <div style={{ fontSize: '1.8vw', fontWeight: 800, marginBottom: '0.1vw' }}>底薪 + 佣金</div>
+                <div style={{ fontSize: '0.7vw', color: '#555', marginBottom: '1.2vw' }}>Commission Based</div>
+                
+                <div style={{ borderTop: '1px solid rgba(0,0,0,0.1)', margin: '0 -1.5vw 1.2vw -1.5vw' }}></div>
+                
+                <div className="features" style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '0.6vw' }}>
+                    <div style={{ fontSize: '0.85vw', lineHeight: 1.3 }}>
+                        <span style={{ fontWeight: 700 }}>投流托管：</span><span style={{ fontSize: '0.8vw', color: '#444' }}>ROI风控与每日监控</span>
+                    </div>
+                    <div style={{ fontSize: '0.85vw', lineHeight: 1.3 }}>
+                        <span style={{ fontWeight: 700 }}>品牌视觉：</span><span style={{ fontSize: '0.8vw', color: '#444' }}>TVC大片 + 30张KV海报</span>
+                    </div>
+                    <div style={{ fontSize: '0.85vw', lineHeight: 1.3 }}>
+                        <span style={{ fontWeight: 700 }}>赠送：</span><span style={{ fontSize: '0.8vw', color: '#444' }}>100张 AI真人买家秀</span>
+                    </div>
+                    <div style={{ fontSize: '0.85vw', lineHeight: 1.3 }}>
+                        <span style={{ fontWeight: 700 }}>资产归还：</span><span style={{ fontSize: '0.8vw', color: '#444' }}>广告账户与人群包 100% 归还</span>
+                    </div>
+                </div>
+                
+                <button style={{ marginTop: '1.5vw', width: '100%', padding: '0.8vw', borderRadius: '8px', background: '#000', color: '#fff', border: 'none', fontWeight: 600, cursor: 'pointer', fontSize: '0.9vw' }}>联系销售顾问</button>
+            </div>
+         </div>
       </div>
     </div>
   );
