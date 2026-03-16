@@ -404,7 +404,7 @@ export default function Home() {
       {/* Grid Background */}
       <div className="grid-svg" ref={gridSvgRef} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
          <img 
-            src="https://www.super-i.cn/bpsf/img/bhome1-1.svg" 
+            src="/bhome1-1.svg" 
             alt="Background Grid" 
             style={{ 
                 width: '100%', 
@@ -419,7 +419,7 @@ export default function Home() {
       <model-viewer
         id="modelViewer"
         style={{ opacity: isLoaded ? 1 : 0, transition: 'opacity 1s ease' }}
-        src="https://www.super-i.cn/bpsf/img/earth.glb?v=1.0.1"
+        src="/earth.glb"
         camera-controls
         tone-mapping="neutral"
         shadow-intensity="0"
@@ -560,7 +560,7 @@ export default function Home() {
             muted 
             autoPlay 
             playsInline
-            src='https://www.super-i.cn/bpsf/img/texiao3.mp4' 
+            src='/texiao3.mp4' 
             style={{ borderRadius: '20px', boxShadow: '0 20px 50px rgba(0,0,0,0.2)' }}
           />
         </div>
